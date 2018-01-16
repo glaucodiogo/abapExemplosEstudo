@@ -1,0 +1,29 @@
+*&---------------------------------------------------------------------*
+*& Report  Z998904_GDA_EXER4_F
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+REPORT  Z998904_GDA_EXER4_F.
+
+DATA vl_nomeFunc TYPE ZTGDA_FUNC-nome.
+
+PARAMETERS: p_codfun TYPE ZTGDA_FUNC-codfun.
+
+AT SELECTION-SCREEN ON p_codfun.
+  CALL FUNCTION 'Z998904_GDA_F_NOME_FUNC'
+    EXPORTING
+      i_codfun         = p_codfun
+    IMPORTING
+      E_NOME           = vl_nomeFunc
+   EXCEPTIONS
+     ERRO_FUNC_INVALIDO  = 1
+     OTHERS              = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Código não existente!' TYPE 'E'.
+  ENDIF.
+
+START-OF-SELECTION.
+  WRITE: / p_codfun, vl_nomeFunc.
